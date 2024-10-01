@@ -34,7 +34,7 @@ const PaymentPage = () => {
     if(selectedMethod === ""){
       return console.log("Choose payment method");
     }
-    axios.post('http://localhost:5000/order', {
+    axios.post('https://canteen-management-system-xi.vercel.app/:5000/order', {
       email,
       items,
       price,

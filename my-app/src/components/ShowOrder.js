@@ -12,12 +12,12 @@ const ShowOrder = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/user', { withCredentials: true })
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/user', { withCredentials: true })
       .then(res => {
         const getEmail = res.data.email;
         if (getEmail === "") return navigate('/login');
         setEmail(getEmail);
-        axios.post('http://localhost:5000/showorder', {
+        axios.post('https://canteen-management-system-xi.vercel.app/:5000/showorder', {
           id,
           email: getEmail
         })
@@ -37,12 +37,12 @@ const ShowOrder = () => {
   }, [navigate, id]);
 
   const handleStatusChange = (orderId, newStatus) => {
-    axios.post('http://localhost:5000/status', {
+    axios.post('https://canteen-management-system-xi.vercel.app/:5000/status', {
       id: orderId,
       status: newStatus
     })
       .then(res => {
-        axios.post('http://localhost:5000/showorder', {
+        axios.post('https://canteen-management-system-xi.vercel.app/:5000/showorder', {
           id,
           email
         })

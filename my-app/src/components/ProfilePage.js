@@ -9,7 +9,7 @@ export default function ProfilePage() {
   const [name,setname]  = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/user',{
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/user',{
       withCredentials: "include"
     })
     .then(res => {
@@ -32,7 +32,7 @@ export default function ProfilePage() {
   };
 
   const signOut = () => {
-    axios.get('http://localhost:5000/logout',{
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/logout',{
       withCredentials: "include",
     })
     .then(res => Navigate('/'))

@@ -36,7 +36,7 @@ export default function Login() {
       val = 0;
     }
     if (val === 1) {
-      axios.post("http://localhost:5000/login",{email,password},{
+      axios.post("https://canteen-management-system-xi.vercel.app/:5000/login",{email,password},{
         withCredentials: "include"
       })
       .then(res => {

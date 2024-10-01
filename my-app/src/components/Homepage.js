@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function HomePage() {
   let Navigate = useNavigate();
   useEffect(() => {
-    axios.get('http://localhost:5000/user', {
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/user', {
       withCredentials: true
     })
     .then(res => {

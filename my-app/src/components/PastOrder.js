@@ -10,14 +10,14 @@ export default function PastOrder() {
   const [orders, setOrders] = useState([]); // State to hold fetched orders
   
   useEffect(() => {
-    axios.get('http://localhost:5000/user',{
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/user',{
       withCredentials: true
     })
     .then(res => {
       const getemail = res.data.email;
       if(getemail === "")  return Navigate('/login');
       setemail(getemail);
-      axios.post('http://localhost:5000/pastorder',{getemail})
+      axios.post('https://canteen-management-system-xi.vercel.app/:5000/pastorder',{getemail})
       .then(res => {
         setOrders(res.data);
       })

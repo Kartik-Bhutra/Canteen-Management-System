@@ -19,14 +19,14 @@ const Cart = () => {
   });
   
   useEffect(() => {
-    axios.get('http://localhost:5000/user', {
+    axios.get('https://canteen-management-system-xi.vercel.app/:5000/user', {
       withCredentials: "include"
     })
       .then(res => {
         const getEmail = res.data.email;
         if (getEmail === "") return Navigate('/login');
         setEmail(getEmail);
-        axios.get('http://localhost:5000/cart')
+        axios.get('https://canteen-management-system-xi.vercel.app/:5000/cart')
           .then(res => {
             setMenu(res.data);
             initialize(res.data);
@@ -100,13 +100,13 @@ const Cart = () => {
   };
 
   const handleStatusChange = (category, name, status) => {
-    axios.post('http://localhost:5000/available', {
+    axios.post('https://canteen-management-system-xi.vercel.app/:5000/available', {
       category,
       name,
       status
     })
       .then(res => {
-        axios.get('http://localhost:5000/cart')
+        axios.get('https://canteen-management-system-xi.vercel.app/:5000/cart')
           .then(res => {
             setMenu(res.data);
             initialize(res.data);
@@ -149,11 +149,11 @@ const Cart = () => {
 
   const handleAddCategory = () => {
     if(newCategory !== ""){
-      axios.post('http://localhost:5000/category',{
+      axios.post('https://canteen-management-system-xi.vercel.app/:5000/category',{
         category : newCategory
       })
       .then(res => {
-        axios.get('http://localhost:5000/cart')
+        axios.get('https://canteen-management-system-xi.vercel.app/:5000/cart')
           .then(res => {
             setMenu(res.data);
             initialize(res.data);
@@ -172,13 +172,13 @@ const Cart = () => {
       if(selectedCategory !== ""){
         if(newItemName !== ""){
           if(newItemPrice !== 0){
-            axios.post('http://localhost:5000/item',{
+            axios.post('https://canteen-management-system-xi.vercel.app/:5000/item',{
               category : selectedCategory,
               name : newItemName,
               price : newItemPrice
             })
             .then(res => {
-              axios.get('http://localhost:5000/cart')
+              axios.get('https://canteen-management-system-xi.vercel.app/:5000/cart')
                 .then(res => {
                   setMenu(res.data);
                   initialize(res.data);

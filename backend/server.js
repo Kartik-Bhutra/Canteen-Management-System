@@ -16,7 +16,7 @@ const categoryRoute = require('./Routes/category');
 const itemRoute = require('./Routes/item');
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: ['https://canteen-management-system-mgza.vercel.app/:3000','https://10.196.38.17:3000'], credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 

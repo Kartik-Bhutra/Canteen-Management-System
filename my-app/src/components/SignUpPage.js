@@ -49,7 +49,7 @@ export default function SignUp() {
       val = 0;
     }
     if (val === 1) {
-      axios.post('http://localhost:5000/signup', { email, name, password })
+      axios.post('https://canteen-management-system-xi.vercel.app/:5000/signup', { email, name, password })
         .then(res => {
           const message = res.data.message;
           if(message){
