@@ -36,3 +36,8 @@ app.use(itemRoute);
 app.listen(5000, () => {
   console.log("Backend started on port 5000");
 });
+
+app.get("/",(req,res)=>{
+  console.log("YOO")
+  res.json({message:"Hello World"});
+});
