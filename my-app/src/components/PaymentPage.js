@@ -42,9 +42,6 @@ const PaymentPage = () => {
     })
     .then(res => {
       return navigate('/order', {
-        state: {
-          id: res.data.id
-        },
         replace: true
       });
     })

@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 import styles from '../CSS/showOrder.module.css';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const ShowOrder = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const id = location.state?.id;
   const [email, setEmail] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const socket = io('http://localhost:5000', { withCredentials: true });
     axios.get('http://localhost:5000/user', { withCredentials: true })
       .then(res => {
         const getEmail = res.data.email;
         if (getEmail === "") return navigate('/login');
         setEmail(getEmail);
+        socket.emit("order_room", getEmail);
         axios.post('http://localhost:5000/showorder', {
-          id,
           email: getEmail
         })
           .then(res => {
@@ -34,26 +35,48 @@ const ShowOrder = () => {
         console.log(err);
         setLoading(false);
       });
-  }, [navigate, id]);
 
-  const handleStatusChange = (orderId, newStatus) => {
+    socket.on("status_change", (data) => {
+      console.log(`Order status updated for order ${data.orderId}: ${data.status}`);
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.order_id === data.orderId ? { ...order, order_status: data.status } : order
+        )
+      );
+    });
+
+    socket.on("new_order", (data) => {
+      axios.post('http://localhost:5000/showorder', {
+        email
+      })
+        .then(res => {
+          setOrders(res.data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setLoading(false);
+        });
+    })
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [navigate]);
+
+  const handleStatusChange = (orderId, newStatus, user_email) => {
     axios.post('http://localhost:5000/status', {
       id: orderId,
-      status: newStatus
+      status: newStatus,
+      email: user_email
     })
       .then(res => {
-        axios.post('http://localhost:5000/showorder', {
-          id,
-          email
-        })
-          .then(res => {
-            setOrders(res.data);
-            setLoading(false);
-          })
-          .catch(err => {
-            console.log(err);
-            setLoading(false);
-          });
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.order_id === orderId ? { ...order, order_status: newStatus } : order
+          )
+        );
+        setLoading(false);
       })
       .catch(err => console.error('Error updating status:', err));
   };
@@ -82,6 +105,7 @@ const ShowOrder = () => {
           </thead>
           <tbody>
             {orders.map(order => (
+              order.order_status !== "Delivered" && order.order_status !== "Cancelled" &&
               <tr key={order.order_id}>
                 <td>{order.order_id}</td>
                 {email === "admin@iitgoa.ac.in" && <td>{order.user_email}</td>}
@@ -93,7 +117,7 @@ const ShowOrder = () => {
                   <td>
                     <select
                       value={order.order_status}
-                      onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
+                      onChange={(e) => handleStatusChange(order.order_id, e.target.value, order.user_email)}
                       className={styles.statusDropdown}
                     >
                       {order.order_status === "notAccepted" &&

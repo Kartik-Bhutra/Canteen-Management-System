@@ -13,11 +13,11 @@ const Cart = () => {
     items: "",
     price: 0,
     quantity: 0,
-    admin : 0,
-    add_category : 0,
-    add_item : 0
+    admin: 0,
+    add_category: 0,
+    add_item: 0
   });
-  
+
   useEffect(() => {
     axios.get('http://localhost:5000/user', {
       withCredentials: "include"
@@ -138,7 +138,7 @@ const Cart = () => {
     });
   };
 
-  
+
 
   const [newCategory, setNewCategory] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -148,35 +148,35 @@ const Cart = () => {
   const [itemError, setItemError] = useState("");
 
   const handleAddCategory = () => {
-    if(newCategory !== ""){
-      axios.post('http://localhost:5000/category',{
-        category : newCategory
+    if (newCategory !== "") {
+      axios.post('http://localhost:5000/category', {
+        category: newCategory
       })
-      .then(res => {
-        axios.get('http://localhost:5000/cart')
-          .then(res => {
-            setMenu(res.data);
-            initialize(res.data);
-          })
-          .catch(err => console.log(err));
-      })
-      .catch(err => console.log(err));
+        .then(res => {
+          axios.get('http://localhost:5000/cart')
+            .then(res => {
+              setMenu(res.data);
+              initialize(res.data);
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(err => console.log(err));
     }
-    else{
+    else {
       setCategoryError("Enter a valid category");
     }
   };
 
   // Function to handle adding a new item
   const handleAddItem = () => {
-      if(selectedCategory !== ""){
-        if(newItemName !== ""){
-          if(newItemPrice !== 0){
-            axios.post('http://localhost:5000/item',{
-              category : selectedCategory,
-              name : newItemName,
-              price : newItemPrice
-            })
+    if (selectedCategory !== "") {
+      if (newItemName !== "") {
+        if (newItemPrice !== 0) {
+          axios.post('http://localhost:5000/item', {
+            category: selectedCategory,
+            name: newItemName,
+            price: newItemPrice
+          })
             .then(res => {
               axios.get('http://localhost:5000/cart')
                 .then(res => {
@@ -186,18 +186,18 @@ const Cart = () => {
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
-          }
-          else{
-            setItemError("Enter a valid price");
-          }
         }
-        else{
-          setItemError("Enter a valid name");
+        else {
+          setItemError("Enter a valid price");
         }
       }
-      else{
-        setItemError("Select a valid category");
+      else {
+        setItemError("Enter a valid name");
       }
+    }
+    else {
+      setItemError("Select a valid category");
+    }
   };
 
   if (!menu || Object.keys(menu).length === 0) {
@@ -305,7 +305,7 @@ const Cart = () => {
                           <td>{item}</td>
                           <td>{cart[category][item]}</td>
                           <td>
-                            ${cart[category][item] * (menuItem ? menuItem.item_price : 0)}
+                            ₹{cart[category][item] * (menuItem ? menuItem.item_price : 0)}
                           </td>
                         </tr>
                       );
@@ -330,7 +330,7 @@ const Cart = () => {
       )}
       {email === "admin@iitgoa.ac.in" && (
         <div className={styles.adminDropdown}>
-          <button className={styles.adminToggleBtn} onClick={() => {toggleDropdown("admin")}}>
+          <button className={styles.adminToggleBtn} onClick={() => { toggleDropdown("admin") }}>
             {open.admin ? "Hide Admin Panel" : "Show Admin Panel"}
           </button>
 
@@ -338,7 +338,7 @@ const Cart = () => {
             <h3>Admin Panel</h3>
 
             <div className={styles.adminDropdownSection}>
-              <button className={styles.adminToggleBtn} onClick={() => {toggleDropdown("add_category")}}>
+              <button className={styles.adminToggleBtn} onClick={() => { toggleDropdown("add_category") }}>
                 {open.add_category ? "Hide Add Category" : "Add New Category"}
               </button>
               <div className={`${styles.addCategoryPanel} ${open.add_category ? styles.showDropdown : styles.hideDropdown}`}>
@@ -353,12 +353,12 @@ const Cart = () => {
                     {categoryError}
                   </div>
                 )}
-                <button onClick={() => {handleAddCategory()}}>Add Category</button>
+                <button onClick={() => { handleAddCategory() }}>Add Category</button>
               </div>
             </div>
 
             <div className={styles.adminDropdownSection}>
-              <button className={styles.adminToggleBtn} onClick={() => {toggleDropdown("add_item")}}>
+              <button className={styles.adminToggleBtn} onClick={() => { toggleDropdown("add_item") }}>
                 {open.add_item ? "Hide Add Item" : "Add New Item"}
               </button>
               <div className={`${styles.addItemPanel} ${open.add_item ? styles.showDropdown : styles.hideDropdown}`}>
@@ -390,7 +390,7 @@ const Cart = () => {
                     {itemError}
                   </div>
                 )}
-                <button onClick={() => {handleAddItem()}}>Add Item</button>
+                <button onClick={() => { handleAddItem() }}>Add Item</button>
               </div>
             </div>
           </div>
