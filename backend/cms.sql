@@ -12,7 +12,7 @@ create table orders
 (
 order_id int auto_increment,
 user_email varchar(100),
-ordered_items varchar(200) not null,
+ordered_items varchar(1000) not null,
 order_price int not null,
 order_time datetime not null,
 order_status enum("Completed","Cancelled","inProgress","notAccepted","Delivered") not null default "notAccepted",
